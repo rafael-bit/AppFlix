@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 import { styled } from "styled-components";
 
 const Filme = styled.div`
@@ -11,7 +12,8 @@ const Filme = styled.div`
 `;
 
 const Container = styled.div`
-  padding-bottom: 1024px;
+  padding-bottom: 800px;
+  background: white;
 `;
 
 export default function Home() {
@@ -28,6 +30,7 @@ export default function Home() {
       <Container>
 
       </Container>
+      <Footer />
     </>
   )
 }
