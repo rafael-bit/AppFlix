@@ -13,7 +13,7 @@ const Filme = styled.div`
 
 const Container = styled.div`
   padding-bottom: 800px;
-  background: white;
+  background: var(--background);
 `;
 
 export default function Home() {
