@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -12,11 +13,49 @@ const Filme = styled.div`
 `;
 
 const Container = styled.div`
-  padding-bottom: 800px;
+  padding-bottom: 75px;
   background: var(--background);
 `;
 
+const Slider = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  margin: 1.5rem;
+`;
+
+const MovieCard = styled.div`
+  width: 200px;
+  margin-right: 1rem;
+`;
+
+interface Movie {
+  id: number;
+  title: string;
+  poster_path: string;
+}
+
 export default function Home() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+  const fetchMovies = async () => {
+    try {
+      const apiKey = "fa29b5f069d7250f11cb94828e871ea7";
+      console.log(apiKey);  
+      const response = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
+      );
+
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -27,10 +66,16 @@ export default function Home() {
       </Head>
       <Header />
       <Filme />
-      <Container>
-
+      <Container> 
+        <Slider>
+          {movies && movies.map((movie) => (
+            <MovieCard key={movie.id}>
+              <img src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`} alt={movie.title} />
+            </MovieCard>
+          ))}
+        </Slider>
       </Container>
       <Footer />
     </>
-  )
+  );
 }
